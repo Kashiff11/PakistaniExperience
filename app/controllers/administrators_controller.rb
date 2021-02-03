@@ -18,7 +18,10 @@ class AdministratorsController < ApplicationController
     @administrator = Administrator.new(administrator_params)
 
     if @administrator.save
-      render json: @administrator, status: :created, location: @administrator
+      render json: {
+        administrator: @administrator.attributes.except("password-digest"), 
+        token: @token
+      }, status: :created
     else
       render json: @administrator.errors, status: :unprocessable_entity
     end
